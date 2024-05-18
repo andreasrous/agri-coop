@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="fragments/header :: header"></head>
+
+<body>
+<!-- Include the header fragment -->
+<div th:insert="fragments/menu :: menu"></div>
+<main>
+    <!-- Content specific to this page -->
+</main>
+
+<!-- Include the footer fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

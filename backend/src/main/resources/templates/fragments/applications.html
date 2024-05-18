@@ -1,0 +1,48 @@
+<applications>
+    <div th:if="${ not#lists.isEmpty(applications)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>VAT Number</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cooperative : ${applications}">
+                <td th:text="${cooperative.name}"></td>
+                <td th:text="${cooperative.vat}"></td>
+                <td th:text="${cooperative.status}"></td>
+                <td th:text="${cooperative.notes}"></td>
+                <td th:if="${cooperative.id}"><a class="btn btn-info" th:href="@{/cooperative/{id}(id=${cooperative.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${cooperative.id}"
+                            name="deleteCooperative"><i class="remove user icon"></i>
+                        Delete</button>
+                    <a class="btn btn-primary" th:href="@{/employee/{employee_id}/{cooperative_id}/check(employee_id=${employee.id},cooperative_id=${cooperative.id})}">Check</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(applications)}">
+        No Applications found!
+    </div>
+    <script type="text/javascript">
+        $("[name='deleteCooperative']").click(function() {
+            var urlCall = "/cooperative/";
+            $.ajax({
+                url : urlCall + $(this).attr('id'),
+                type : 'DELETE',
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href", value="/cooperative");
+                },
+                error : function(result) {
+                    console.log(result);S
+                },
+            });
+        });
+    </script>
+</applications>

@@ -1,0 +1,47 @@
+<admins>
+    <div th:if="${ not#lists.isEmpty(admins)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="admin : ${admins}">
+                <td th:text="${admin.firstName}"></td>
+                <td th:text="${admin.lastName}"></td>
+                <td th:text="${admin.email}"></td>
+                <td th:if="${admin.id}"><a class="btn btn-info" th:href="@{/admin/{id}(id=${admin.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${admin.id}"
+                            name="deleteAdmin"><i class="remove user icon"></i>
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(admins)}">
+        No Admins found!
+    </div>
+    <a href="/admin/new" class="btn btn-primary" role="button">Create new Admin</a>
+    <script type="text/javascript">
+        $("[name='deleteAdmin']").click(function() {
+            var urlCall = "/admin/";
+            $.ajax({
+                url : urlCall + $(this).attr('id'),
+                type : 'DELETE',
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href", value="/admin");
+                },
+                error : function(result) {
+                    console.log(result);
+                },
+            });
+        });
+    </script>
+</admins>

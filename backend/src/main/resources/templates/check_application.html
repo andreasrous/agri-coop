@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="fragments/header :: header"></head>
+
+<body>
+<!-- Include the header fragment -->
+<div th:insert="fragments/menu :: menu"></div>
+<main>
+    <div class="container">
+        <h3 style="margin-bottom: 15px" th:inline="text">Check Application</h3>
+        <p>
+            <span style="font-size: 1.2em; margin-bottom: 15px" th:text="${'Check Result'}" class="check-result"></span><br>
+            <span th:utext="${cooperative.check()}" style="white-space: pre-line;"></span>
+        </p>
+        <form th:action="@{/employee/{employee_id}/{cooperative_id}/check/submit(employee_id=${employee.id},cooperative_id=${cooperative.id})}" th:object="${cooperative}" method="post">
+            <div class="form-group">
+                <label style="font-size: 1.2em; margin-bottom: 15px" for="notes">Notes</label>
+                <input type="text" id="notes" class="form-control" th:field="*{notes}">
+            </div>
+            <br>
+            <!-- Button group for Approve and Reject buttons -->
+            <div class="btn-group">
+                <button type="submit" name="approve" class="btn btn-primary">Approve</button>
+                <button type="submit" name="reject" class="btn btn-primary">Reject</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<!-- Include the footer fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>
+

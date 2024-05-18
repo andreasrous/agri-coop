@@ -1,0 +1,48 @@
+<farmers>
+    <div th:if="${ not#lists.isEmpty(farmers)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="farmer : ${farmers}">
+                <td th:text="${farmer.firstName}"></td>
+                <td th:text="${farmer.lastName}"></td>
+                <td th:text="${farmer.email}"></td>
+                <td th:if="${farmer.id}"><a class="btn btn-info" th:href="@{/farmer/{id}(id=${farmer.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${farmer.id}"
+                            name="deleteFarmer"><i class="remove user icon"></i>
+                        Delete
+                    </button>
+                    <a class="btn btn-primary" th:href="@{/cooperative/farmer/{id}(id=${farmer.id})}">My Cooperative</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(farmers)}">
+        No Farmers found!
+    </div>
+    <a href="/farmer/new" class="btn btn-primary" role="button">Create new Farmer</a>
+    <script type="text/javascript">
+        $("[name='deleteFarmer']").click(function () {
+            var urlCall = "/farmer/";
+            $.ajax({
+                url: urlCall + $(this).attr('id'),
+                type: 'DELETE',
+                success: function (result) {
+                    console.log(result);
+                    $(location).attr("href", value = "/farmer");
+                },
+                error: function (result) {
+                    console.log(result);
+                },
+            });
+        });
+    </script>
+</farmers>

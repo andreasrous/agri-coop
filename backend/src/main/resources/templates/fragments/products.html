@@ -1,0 +1,46 @@
+<products>
+    <div th:if="${ not#lists.isEmpty(products)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.category}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:if="${product.id}"><a class="btn btn-info" th:href="@{/product/{id}(id=${product.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${product.id}"
+                            name="deleteProduct"><i class="remove user icon"></i>
+                        Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(products)}">
+        No Products found!
+    </div>
+    <a href="/product/new" class="btn btn-primary" role="button">Create new Product</a>
+    <script type="text/javascript">
+        $("[name='deleteProduct']").click(function() {
+            var urlCall = "/product/";
+            $.ajax({
+                url : urlCall + $(this).attr('id'),
+                type : 'DELETE',
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href", value="/product");
+                },
+                error : function(result) {
+                    console.log(result);S
+                },
+            });
+        });
+    </script>
+</products>

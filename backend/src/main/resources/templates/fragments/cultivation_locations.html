@@ -1,0 +1,46 @@
+<cultivation_locations>
+    <div th:if="${ not#lists.isEmpty(cultivation_locations)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Address</th>
+                <th>Area</th>
+                <th>Zip Code</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cultivation_location : ${cultivation_locations}">
+                <td th:text="${cultivation_location.address}"></td>
+                <td th:text="${cultivation_location.area}"></td>
+                <td th:text="${cultivation_location.zipCode}"></td>
+                <td th:if="${cultivation_location.id}"><a class="btn btn-info" th:href="@{/cultivation_location/{id}(id=${cultivation_location.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${cultivation_location.id}"
+                            name="deleteCultivationLocation"><i class="remove user icon"></i>
+                        Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(cultivation_locations)}">
+        No Cultivation Locations found!
+    </div>
+    <a href="/cultivation_location/new" class="btn btn-primary" role="button">Create new Cultivation Location</a>
+    <script type="text/javascript">
+        $("[name='deleteCultivationLocation']").click(function() {
+            var urlCall = "/cultivation_location/";
+            $.ajax({
+                url : urlCall + $(this).attr('id'),
+                type : 'DELETE',
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href", value="/cultivation_location");
+                },
+                error : function(result) {
+                    console.log(result);S
+                },
+            });
+        });
+    </script>
+</cultivation_locations>

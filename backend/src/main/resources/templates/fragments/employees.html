@@ -1,0 +1,49 @@
+<employees>
+    <div th:if="${ not#lists.isEmpty(employees)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.firstName}"></td>
+                <td th:text="${employee.lastName}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:if="${employee.id}"><a class="btn btn-info" th:href="@{/employee/{id}(id=${employee.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${employee.id}"
+                            name="deleteEmployee"><i class="remove user icon"></i>
+                        Delete
+                    </button>
+                    <a class="btn btn-primary" th:href="@{/employee/{id}/processed_applications(id=${employee.id})}">Processed Applications</a>
+                    <a class="btn btn-primary" th:href="@{/employee/{id}/unprocessed_applications(id=${employee.id})}">Unprocessed Applications</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(employees)}">
+        No Employees found!
+    </div>
+    <a href="/employee/new" class="btn btn-primary" role="button">Create new Employee</a>
+    <script type="text/javascript">
+        $("[name='deleteEmployee']").click(function() {
+            var urlCall = "/employee/";
+            $.ajax({
+                url : urlCall + $(this).attr('id'),
+                type : 'DELETE',
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href", value="/employee");
+                },
+                error : function(result) {
+                    console.log(result);
+                },
+            });
+        });
+    </script>
+</employees>
