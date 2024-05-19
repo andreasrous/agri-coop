@@ -3,12 +3,22 @@
 
 /* layout */
 :root {
-  --primary: #1aac83;
-  --error: #e7195a;
+  --green: #42b682;
+  --red: #e7195a;
+  /* #f00000 */
+  --blue: #027afc;
+  --black: #000;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: #f1f1f1;
+  /* #efefef */
   margin: 0;
-  font-family: "Inter";
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
