@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 import gr.hua.agricoop.payload.request.*;
 import gr.hua.agricoop.payload.response.*;
 
-@CrossOrigin(origins = "http://localhost:8080/")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

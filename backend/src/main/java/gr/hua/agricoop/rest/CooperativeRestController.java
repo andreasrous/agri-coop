@@ -17,9 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cooperative")
-@CrossOrigin(origins = "http://localhost:8080/",
-        methods = {RequestMethod.GET, RequestMethod.POST},
-        allowedHeaders = {"*", "Content-Type"})
 public class CooperativeRestController {
 
     @Autowired
