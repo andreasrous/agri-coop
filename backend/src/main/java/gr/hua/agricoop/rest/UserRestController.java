@@ -1,7 +1,6 @@
 package gr.hua.agricoop.rest;
 
 import gr.hua.agricoop.entity.Cooperative;
-import gr.hua.agricoop.entity.Product;
 import gr.hua.agricoop.entity.Role;
 import gr.hua.agricoop.entity.User;
 import gr.hua.agricoop.repository.RoleRepository;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:8080/",
-        methods = {RequestMethod.GET, RequestMethod.POST},
-        allowedHeaders = {"*", "Content-Type"})
-public class UserController {
+public class UserRestController {
 
     @Autowired
     private UserService userService;

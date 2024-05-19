@@ -28,8 +28,8 @@ public class AppConfig {
                         ("Bearer Authentication", createAPIKeyScheme()))
                 .info(new Info().title("DS LAB 2023 REST API")
                         .description("This API is used in dl-lab-2023 project")
-                        .version("1.0").contact(new Contact().name("Panagiotis Foteinopoulos")
-                                .email("it2021154@hua.gr").url("https://github.com/Panos994"))
+                        .version("1.0").contact(new Contact().name("Andreas Rousounelos")
+                                .email("it2021088@hua.gr").url("https://github.com/andreasrous"))
                         .license(new License().name("License of API")
                                 .url("https://swagger.io/license/")));
         return info;

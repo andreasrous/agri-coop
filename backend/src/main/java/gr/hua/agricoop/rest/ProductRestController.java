@@ -10,9 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
-@CrossOrigin(origins = "http://localhost:8080/",
-        methods = {RequestMethod.GET, RequestMethod.POST},
-        allowedHeaders = {"*", "Content-Type"})
 public class ProductRestController {
 
     @Autowired
