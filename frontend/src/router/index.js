@@ -13,9 +13,15 @@ const router = createRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/cooperative/user/:id',
+            name: 'user-cooperatives',
+            component: () => import('../views/UserCooperativesView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/cooperative',
-            name: 'cooperatives',
-            component: () => import('../views/CooperativesView.vue'),
+            name: 'employee-cooperatives',
+            component: () => import('../views/EmployeeCooperativesView.vue'),
             meta: { requiresAuth: true }
         },
         // {

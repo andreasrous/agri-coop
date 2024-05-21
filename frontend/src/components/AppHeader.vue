@@ -1,22 +1,22 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApplicationStore } from '@/stores/application.js';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const applicationStore = useApplicationStore();
-
+const { isAuthenticated } = storeToRefs(applicationStore);
+const { userData, clearUserData, isAuthorized } = applicationStore;
 const loading = ref(false);
 
+const isUserOnly = computed(() => isAuthorized('ROLE_USER') && !isAuthorized('ROLE_MODERATOR'));
+const isEmployeeOnly = computed(() => isAuthorized('ROLE_MODERATOR') && !isAuthorized('ROLE_USER'));
+
 const logout = () => {
-  // Perform a logout by flushing user data stored in tab state (pinia) and local storage (browser).
-  // REMEMBER: authentication is stateless.
-  // That is, if users store a valid JWT they can use it until is expired.
-  // We cannot actually perform a logout because JWT cannot be invalided.
-  // A solution is to blacklist the JWT until is expired.
   loading.value = true;
-  applicationStore.clearUserData();
-  setTimeout(function () { }, 2000); // Simulate a remote request.
+  clearUserData();
+  setTimeout(function () { }, 2000);
   router.push({ name: 'login' });
 };
 
@@ -34,23 +34,26 @@ function openMenu() {
     </div>
     <nav>
       <ul>
-        <li v-if="applicationStore.isAuthenticated === true">
+        <li v-if="isAuthenticated">
           <router-link :to="{ name: 'home' }">Home</router-link>
         </li>
-        <li v-if="applicationStore.isAuthenticated === true">
-          <router-link :to="{ name: 'cooperatives' }">Cooperatives</router-link>
+        <li v-if="isAuthenticated">
+          <router-link v-if="isUserOnly"
+            :to="{ name: 'user-cooperatives', params: { id: userData.id } }">Cooperatives</router-link>
+          <router-link v-else-if="isEmployeeOnly" :to="{ name: 'employee-cooperatives' }">Cooperatives</router-link>
+          <router-link v-else :to="{ name: 'employee-cooperatives' }">Cooperatives</router-link>
         </li>
-        <!-- <li v-if="applicationStore.isAuthenticated === true">
+        <!-- <li v-if="isAuthenticated === true">
           <router-link :to="{ name: 'products' }">Products</router-link>
         </li>
-        <li v-if="applicationStore.isAuthenticated === true">
+        <li v-if="isAuthenticated === true">
           <router-link :to="{ name: 'cultivation-locations' }">Cultivation Locations</router-link>
         </li> -->
       </ul>
     </nav>
     <div class="auth">
-      <router-link v-if="applicationStore.isAuthenticated === false" :to="{ name: 'login' }">Login</router-link>
-      <button v-if="applicationStore.isAuthenticated === true" @click="logout">Logout</button>
+      <router-link v-if="!isAuthenticated" :to="{ name: 'login' }">Login</router-link>
+      <button v-if="isAuthenticated" @click="logout">Logout</button>
     </div>
     <button id="menuButton" @click="openMenu">
       <i class="bx bx-menu"></i>

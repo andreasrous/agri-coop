@@ -37,6 +37,10 @@ export const useApplicationStore = defineStore('application', () => {
     const isAuthenticated = computed(() => {
         return checkJWT(userData.value?.accessToken);
     });
+    const isAuthorized = (requiredRole) => {
+        if (!isAuthenticated.value) return false;
+        return userData.value?.roles?.includes(requiredRole);
+    };
 
-    return { userData, setUserData, persistUserData, loadUserData, clearUserData, isAuthenticated };
+    return { userData, setUserData, persistUserData, loadUserData, clearUserData, isAuthenticated, isAuthorized };
 });

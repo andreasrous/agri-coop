@@ -87,7 +87,7 @@ h1 {
   text-decoration: underline;
 }
 
-.inputBox input[type="submit"] {
+.inputBox input[type="button"] {
   background: var(--blue);
   color: var(--white);
   font-weight: 600;
@@ -96,7 +96,7 @@ h1 {
   transition: 0.1s ease-out;
 }
 
-.inputBox input[type="submit"]:hover {
+.inputBox input[type="button"]:hover {
   background: color-mix(in srgb, var(--blue) 90%, transparent);
 }
 

@@ -20,7 +20,6 @@ public class CooperativeService {
     @Autowired
     private CooperativeRepository cooperativeRepository;
 
-    @Secured("ROLE_USER")
     @Transactional
     public List<Cooperative> getCooperatives() {
         return cooperativeRepository.findAll();

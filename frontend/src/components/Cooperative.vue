@@ -1,4 +1,7 @@
 <script setup>
+import { RouterLink } from 'vue-router';
+import { useApplicationStore } from '@/stores/application.js';
+const { isAuthorized } = useApplicationStore();
 defineProps(['name', 'status', 'notes']);
 </script>
 
@@ -7,11 +10,11 @@ defineProps(['name', 'status', 'notes']);
     <h4>{{ name }}</h4>
     <p><strong>Status: </strong>{{ status }}</p>
     <p><strong>Notes: </strong>{{ notes }}</p>
-    <div class="icons">
+    <div v-if="isAuthorized('ROLE_USER')" class="icons">
       <i class="bx bx-edit-alt"></i>
       <i class="bx bx-trash"></i>
     </div>
-    <router-link :to="{ name: 'home' }">Validation Check</router-link>
+    <router-link v-if="isAuthorized('ROLE_MODERATOR')" :to="{ name: 'home' }">Validation Check</router-link>
     <div class="rect"></div>
   </div>
 </template>

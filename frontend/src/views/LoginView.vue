@@ -76,7 +76,7 @@ onBeforeMount(() => {
             <span>Don't have an account?</span> <router-link to="/signup">Sign Up</router-link>
           </div>
           <div class="inputBox">
-            <input @click="onFormSubmit" type="submit" value="Login">
+            <input @click="onFormSubmit" type="button" value="Login">
           </div>
         </form>
       </div>
