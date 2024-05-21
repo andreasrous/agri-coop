@@ -11,6 +11,8 @@ defineProps(['name', 'status', 'notes']);
       <i class="bx bx-edit-alt"></i>
       <i class="bx bx-trash"></i>
     </div>
+    <router-link :to="{ name: 'home' }">Validation Check</router-link>
+    <div class="rect"></div>
   </div>
 </template>
 
