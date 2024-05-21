@@ -4,10 +4,12 @@
 /* layout */
 :root {
   --green: #42b682;
-  --red: #e7195a;
-  /* #f00000 */
+  --red: #f00000;
   --blue: #027afc;
   --black: #000;
+  --white: #fff;
+  --dark-gray: #333;
+  --border: #ccc;
 }
 
 html {
@@ -16,7 +18,6 @@ html {
 
 body {
   background: #f1f1f1;
-  /* #efefef */
   margin: 0;
   padding: 0;
   box-sizing: border-box;

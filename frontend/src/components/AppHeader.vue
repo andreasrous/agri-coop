@@ -1,7 +1,25 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useApplicationStore } from '@/stores/application.js';
+
+const router = useRouter();
 const applicationStore = useApplicationStore();
+
+const loading = ref(false);
+
+const logout = () => {
+  // Perform a logout by flushing user data stored in tab state (pinia) and local storage (browser).
+  // REMEMBER: authentication is stateless.
+  // That is, if users store a valid JWT they can use it until is expired.
+  // We cannot actually perform a logout because JWT cannot be invalided.
+  // A solution is to blacklist the JWT until is expired.
+  loading.value = true;
+  applicationStore.clearUserData();
+  setTimeout(function () { }, 2000); // Simulate a remote request.
+  router.push({ name: 'login' });
+};
+
 function openMenu() {
   const header = document.querySelector('header');
   header.classList.toggle('open');
@@ -32,10 +50,14 @@ function openMenu() {
     </nav>
     <div class="auth">
       <router-link v-if="applicationStore.isAuthenticated === false" :to="{ name: 'login' }">Login</router-link>
-      <router-link v-if="applicationStore.isAuthenticated === true" :to="{ name: 'logout' }">Logout</router-link>
+      <button v-if="applicationStore.isAuthenticated === true" @click="logout">Logout</button>
     </div>
     <button id="menuButton" @click="openMenu">
       <i class="bx bx-menu"></i>
     </button>
   </header>
 </template>
+
+<style scoped>
+@import '../assets/header.css';
+</style>
