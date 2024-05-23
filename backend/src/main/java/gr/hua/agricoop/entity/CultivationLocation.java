@@ -1,9 +1,12 @@
 package gr.hua.agricoop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "cultivation_location")
+@Table(name = "cultivation_locations")
 public class CultivationLocation {
 
     @Id
@@ -20,9 +23,9 @@ public class CultivationLocation {
     @Column
     private String zipCode;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "cooperative_id")
-    private Cooperative cooperative;
+    @JsonIgnore
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "cultivationLocations")
+    private List<Cooperative> cooperatives;
 
     public CultivationLocation() {
     }
@@ -65,12 +68,27 @@ public class CultivationLocation {
         this.zipCode = zipCode;
     }
 
-    public Cooperative getCooperative() {
-        return cooperative;
+    public List<Cooperative> getCooperatives() {
+        return cooperatives;
     }
 
-    public void setCooperative(Cooperative cooperative) {
-        this.cooperative = cooperative;
+    public void setCooperatives(List<Cooperative> cooperatives) {
+        this.cooperatives = cooperatives;
+    }
+
+    public void addCooperative(Cooperative cooperative) {
+        cooperatives.add(cooperative);
+    }
+
+    public void removeCooperative(Cooperative cooperative) {
+        cooperatives.remove(cooperative);
+    }
+
+    @PreRemove
+    private void preRemove() {
+        for (Cooperative cooperative : cooperatives) {
+            cooperative.removeCultivationLocation(this);
+        }
     }
 
     @Override

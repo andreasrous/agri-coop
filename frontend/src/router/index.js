@@ -71,19 +71,19 @@ const router = createRouter({
         //     ]
         // },
         // {
-        //     path: '/cultivations_location',
+        //     path: '/cultivations-location',
         //     name: 'cultivation-locations',
         //     component: () => import('../views/CultivationLocationsView.vue'),
         //     meta: { requiresAuth: true }
         // },
         // {
-        //     path: '/cultivation_location/new',
+        //     path: '/cultivation-location/new',
         //     name: 'cultivation-location-new',
         //     component: () => import('../views/CreateCultivationLocationView.vue'),
         //     meta: { requiresAuth: true }
         // },
         // {
-        //     path: '/cultivation_location/:id',
+        //     path: '/cultivation-location/:id',
         //     name: 'cultivation-location',
         //     component: () => import('../views/CultivationLocationView.vue'),
         //     meta: { requiresAuth: true },

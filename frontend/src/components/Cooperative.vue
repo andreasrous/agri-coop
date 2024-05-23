@@ -14,7 +14,7 @@ defineProps(['name', 'status', 'notes']);
       <i class="bx bx-edit-alt"></i>
       <i class="bx bx-trash"></i>
     </div>
-    <router-link v-if="isAuthorized('ROLE_MODERATOR')" :to="{ name: 'home' }">Validation Check</router-link>
+    <router-link v-if="isAuthorized('ROLE_EMPLOYEE')" :to="{ name: 'home' }">Validation Check</router-link>
     <div class="rect"></div>
   </div>
 </template>

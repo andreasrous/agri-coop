@@ -1,11 +1,9 @@
 package gr.hua.agricoop.service;
 
 import gr.hua.agricoop.entity.Product;
-import gr.hua.agricoop.repository.CooperativeRepository;
 import gr.hua.agricoop.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,23 +14,21 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private CooperativeRepository cooperativeRepository;
-
-    public Product editProduct(Integer productId, Product updatedProduct) {
-        Product existingProduct = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
-        existingProduct.setCategory(updatedProduct.getCategory());
-        existingProduct.setPrice(updatedProduct.getPrice());
-        existingProduct.setName(updatedProduct.getName());
-        existingProduct.setCooperative(updatedProduct.getCooperative());
-
-        return productRepository.save(existingProduct);
-    }
-
     @Transactional
     public List<Product> getProducts() {
         return productRepository.findAll();
+    }
+
+    @Transactional
+    public Product getProduct(Integer productId) {
+        return productRepository.findById(productId).orElseThrow();
+    }
+
+    @Transactional
+    public List<Product> getProductsWithoutCooperative() {
+        List<Product> products = productRepository.findAll();
+        products.removeIf(product -> !product.getCooperatives().isEmpty());
+        return products;
     }
 
     @Transactional
@@ -42,19 +38,19 @@ public class ProductService {
     }
 
     @Transactional
+    public Product editProduct(Integer productId, Product updatedProduct) {
+        Product existingProduct = productRepository.findById(productId).orElse(null);
+        if (existingProduct != null) {
+            existingProduct.setCategory(updatedProduct.getCategory());
+            existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setName(updatedProduct.getName());
+            productRepository.save(existingProduct);
+        }
+        return existingProduct;
+    }
+
+    @Transactional
     public void deleteProduct(Integer productId) {
         productRepository.deleteById(productId);
-    }
-
-    @Transactional
-    public Product getProduct(Integer productId) {
-        return productRepository.findById(productId).get();
-    }
-
-    @Transactional
-    public List<Product> getProductsWithoutCooperative() {
-        List<Product> products = productRepository.findAll();
-        products.removeIf(product -> product.getCooperative() != null);
-        return products;
     }
 }

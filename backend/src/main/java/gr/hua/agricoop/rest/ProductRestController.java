@@ -16,20 +16,14 @@ public class ProductRestController {
     private ProductService productService;
 
     @GetMapping("")
-    public List<Product> showProducts() {
+    public List<Product> getProducts() {
         return productService.getProducts();
     }
 
-    // δεν αποθηκεύει το product στον πίνακα (τζάμπα μέθοδος)
-    @GetMapping("/new")
-    public Product addProduct() {
-        return new Product();
-    }
-
-    // κάνει την αποθήκευση
-    @PostMapping("/empty")
-    public Product addEmptyProduct() {
-        return productService.saveProduct(new Product());
+    @PostMapping("/new")
+    public List<Product> addProduct(@RequestBody Product product) {
+        productService.saveProduct(product);
+        return productService.getProducts();
     }
 
     @PutMapping("/{product_id}")
@@ -38,13 +32,7 @@ public class ProductRestController {
         return ResponseEntity.ok(updatedProduct);
     }
 
-    @PostMapping("/new")
-    public List<Product> saveProduct(@RequestBody Product product) {
-        productService.saveProduct(product);
-        return productService.getProducts();
-    }
-
-    @DeleteMapping("{product_id}")
+    @DeleteMapping("/{product_id}")
     public List<Product> deleteProduct(@PathVariable Integer product_id) {
         productService.deleteProduct(product_id);
         return productService.getProducts();

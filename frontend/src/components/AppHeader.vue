@@ -10,8 +10,8 @@ const { isAuthenticated } = storeToRefs(applicationStore);
 const { userData, clearUserData, isAuthorized } = applicationStore;
 const loading = ref(false);
 
-const isUserOnly = computed(() => isAuthorized('ROLE_USER') && !isAuthorized('ROLE_MODERATOR'));
-const isEmployeeOnly = computed(() => isAuthorized('ROLE_MODERATOR') && !isAuthorized('ROLE_USER'));
+const isUserOnly = computed(() => isAuthorized('ROLE_USER') && !isAuthorized('ROLE_EMPLOYEE'));
+const isEmployeeOnly = computed(() => isAuthorized('ROLE_EMPLOYEE') && !isAuthorized('ROLE_USER'));
 
 const logout = () => {
   loading.value = true;

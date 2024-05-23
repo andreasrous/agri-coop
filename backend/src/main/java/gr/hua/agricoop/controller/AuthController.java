@@ -58,8 +58,8 @@ public class AuthController {
             roleRepository.save(new Role("ROLE_USER"));
             return null;
         });
-        roleRepository.findByName("ROLE_MODERATOR").orElseGet(() -> {
-            roleRepository.save(new Role("ROLE_MODERATOR"));
+        roleRepository.findByName("ROLE_EMPLOYEE").orElseGet(() -> {
+            roleRepository.save(new Role("ROLE_EMPLOYEE"));
             return null;
         });
         roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
@@ -129,7 +129,7 @@ public class AuthController {
 
                         break;
                     case "mod":
-                        Role modRole = roleRepository.findByName("ROLE_MODERATOR")
+                        Role modRole = roleRepository.findByName("ROLE_EMPLOYEE")
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 
