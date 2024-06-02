@@ -42,5 +42,13 @@ export const useApplicationStore = defineStore('application', () => {
         return userData.value?.roles?.includes(requiredRole);
     };
 
-    return { userData, setUserData, persistUserData, loadUserData, clearUserData, isAuthenticated, isAuthorized };
+    return {
+        userData,
+        setUserData,
+        persistUserData,
+        loadUserData,
+        clearUserData,
+        isAuthenticated,
+        isAuthorized
+    };
 });

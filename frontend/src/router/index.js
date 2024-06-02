@@ -14,22 +14,28 @@ const router = createRouter({
         },
         {
             path: '/cooperative/user/:id',
-            name: 'user-cooperatives',
-            component: () => import('../views/UserCooperativesView.vue'),
+            name: 'cooperatives',
+            component: () => import('../views/CooperativesView.vue'),
             meta: { requiresAuth: true }
         },
         {
-            path: '/cooperative',
-            name: 'employee-cooperatives',
-            component: () => import('../views/EmployeeCooperativesView.vue'),
+            path: '/cooperative/new',
+            name: 'cooperative-new',
+            component: () => import('../views/CooperativeFormView.vue'),
             meta: { requiresAuth: true }
         },
-        // {
-        //     path: '/cooperative/new',
-        //     name: 'cooperative-new',
-        //     component: () => import('../views/CreateCooperativeView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
+        {
+            path: '/cooperative/:id',
+            name: 'cooperative-edit',
+            component: () => import('../views/CooperativeFormView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/cooperative/:id/check',
+            name: 'cooperative-check',
+            component: () => import('../views/CheckCooperativeView.vue'),
+            meta: { requiresAuth: true }
+        },
         // {
         //     path: '/cooperative/:id',
         //     name: 'cooperative',

@@ -96,7 +96,7 @@ public class Cooperative {
     }
 
     public String getStatus() {
-        return status.substring(0, 1).toUpperCase() + status.substring(1);
+        return status;
     }
 
     public void setStatus(String status) {
@@ -181,18 +181,18 @@ public class Cooperative {
     }
 
     private String getString() {
-        String checkResult = "Application has:\n";
+        String checkResult = "";
         if (farmers.isEmpty()) {
-            checkResult += "\t- Less than 1 member\n";
+            checkResult += "Less than 1 member,";
         }
         if (products.isEmpty()) {
-            checkResult += "\t- Less than 1 product\n";
+            checkResult += "Less than 1 product,";
         }
         if (cultivationLocations.isEmpty()) {
-            checkResult += "\t- Less than 1 cultivation location\n";
+            checkResult += "Less than 1 cultivation location,";
         }
         if (!isVatValid()) {
-            checkResult += "\t- Invalid VAT number";
+            checkResult += "Invalid VAT number";
         }
         return checkResult;
     }

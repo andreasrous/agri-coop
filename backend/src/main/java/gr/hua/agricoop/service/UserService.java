@@ -36,9 +36,10 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> getFarmersWithoutCooperative() {
+    public List<User> getFarmers() {
         List<User> farmers = userRepository.findAll();
-        farmers.removeIf(farmer-> !farmer.getCooperatives().isEmpty());
+        Role role = roleRepository.findById(1).orElse(null);
+        farmers.removeIf(farmer-> !farmer.getRoles().contains(role));
         return farmers;
     }
 

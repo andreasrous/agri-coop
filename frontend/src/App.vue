@@ -8,13 +8,13 @@ import AppFooter from '@/components/AppFooter.vue';
 const { loadUserData } = useApplicationStore();
 
 onBeforeMount(() => {
-  // If this method is non-blocking, add a loader.
-  loadUserData();
+    // If this method is non-blocking, add a loader.
+    loadUserData();
 });
 </script>
 
 <template>
-  <AppHeader />
-  <RouterView />
-  <AppFooter />
+    <AppHeader />
+    <RouterView />
+    <AppFooter />
 </template>

@@ -3,12 +3,15 @@ import { useApplicationStore } from '@/stores/application.js';
 
 const store = useApplicationStore();
 
-export function useRemoteData(urlRef, authRef, methodRef = ref("GET"), bodyRef = ref(null),) {
-    const data = ref(null);
+export function useRemoteData(urlsRef, authRef, methodRef = ref('GET'), bodyRef = ref(null)) {
+    const data = ref({});
     const error = ref(null);
     const loading = ref(false);
 
-    const performRequest = () => {
+    const performRequest = async () => {
+        loading.value = true;
+        error.value = null;
+
         const headers = {
             'Content-Type': 'application/json'
         };
@@ -18,27 +21,34 @@ export function useRemoteData(urlRef, authRef, methodRef = ref("GET"), bodyRef =
         }
         const config = {
             method: methodRef.value,
-            headers: headers,
+            headers: headers
         };
 
         if (bodyRef.value !== null) {
             config.body = JSON.stringify(bodyRef.value);
         }
 
-        fetch(urlRef.value, config)
-            .then((response) => {
-                if (response.ok) {
-                    response.json().then((responseData) => {
-                        data.value = responseData;
+        try {
+            const responses = await Promise.all(
+                urlsRef.value.map((url) => {
+                    return fetch(url, config).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Network response was not ok.');
+                        }
                     });
-                }
-            })
-            .catch((err) => {
-                error.value = err;
-            })
-            .finally(() => {
-                loading.value = false;
+                })
+            );
+
+            responses.forEach((responseData, index) => {
+                data.value[urlsRef.value[index]] = responseData;
             });
+        } catch (err) {
+            error.value = err;
+        } finally {
+            loading.value = false;
+        }
     };
 
     return { data, error, loading, performRequest };

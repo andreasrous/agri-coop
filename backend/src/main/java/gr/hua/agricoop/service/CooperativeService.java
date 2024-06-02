@@ -1,5 +1,6 @@
 package gr.hua.agricoop.service;
 
+import gr.hua.agricoop.dto.CooperativeDto;
 import gr.hua.agricoop.entity.Cooperative;
 import gr.hua.agricoop.entity.CultivationLocation;
 import gr.hua.agricoop.entity.Product;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CooperativeService {
@@ -53,14 +55,20 @@ public class CooperativeService {
     }
 
     @Transactional
-    public Cooperative editCooperative(Integer cooperativeId, Cooperative updatedCooperative) {
+    public Cooperative editCooperative(Integer cooperativeId, CooperativeDto updatedCooperative) {
         Cooperative existingCooperative = cooperativeRepository.findById(cooperativeId).orElse(null);
         if (existingCooperative != null) {
+            List<User> farmers = updatedCooperative.getFarmers().stream()
+                    .map(farmerDto -> userService.getUser(farmerDto.getId())).collect(Collectors.toList());
+            List<Product> products = updatedCooperative.getProducts().stream()
+                    .map(productDto -> productService.getProduct(productDto.getId())).collect(Collectors.toList());
+            List<CultivationLocation> cultivationLocations = updatedCooperative.getCultivationLocations().stream()
+                    .map(locationDto -> cultivationLocationService.getCultivationLocation(locationDto.getId())).collect(Collectors.toList());
             existingCooperative.setName(updatedCooperative.getName());
             existingCooperative.setVat(updatedCooperative.getVat());
-            existingCooperative.setFarmers(updatedCooperative.getFarmers());
-            existingCooperative.setProducts(updatedCooperative.getProducts());
-            existingCooperative.setCultivationLocations(updatedCooperative.getCultivationLocations());
+            existingCooperative.setFarmers(farmers);
+            existingCooperative.setProducts(products);
+            existingCooperative.setCultivationLocations(cultivationLocations);
             cooperativeRepository.save(existingCooperative);
         }
         return existingCooperative;
@@ -86,7 +94,7 @@ public class CooperativeService {
 
     @Transactional
     public String checkApplication(Integer cooperativeId) {
-        return getCooperative(cooperativeId).check();
+        return "{\"checkResult\": \"" + getCooperative(cooperativeId).check() + "\"}";
     }
 
     @Transactional

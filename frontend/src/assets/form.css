@@ -1,132 +1,298 @@
 @import './base.css';
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    color: var(--red);
+    list-style-position: inside;
+    font-size: 18px;
 }
 
 .container {
-  height: 80vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    height: 80vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .login,
-.signup {
-  width: 350px;
-  border-radius: 10px;
-  background: var(--white);
-  box-shadow: 0 5px 80px rgba(0, 0, 0, 0.1);
+.signup,
+.create {
+    width: 350px;
+    border-radius: 10px;
+    background: var(--white);
+    box-shadow: 0 5px 80px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  padding: 10px;
-  color: var(--white);
-  background: var(--green);
-  text-align: center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+h1,
+h2 {
+    padding: 10px;
+    color: var(--white);
+    background: var(--green);
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+h2 {
+    font-size: 22px;
 }
 
 .content {
-  padding: 20px;
-  margin-top: 5px;
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    padding: 20px;
+    margin-top: 5px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
 .inputBox {
-  position: relative;
-  width: 100%;
+    position: relative;
+    width: 100%;
 }
 
 .inputBox input {
-  position: relative;
-  width: 100%;
-  /* background: #eee; */
-  border: none;
-  outline: none;
-  padding: 25px 10px 7.5px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  font-weight: 300;
-  font-size: 1em;
-  padding: 12px 15px;
+    position: relative;
+    width: 100%;
+    /* background: #eee; */
+    outline: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-weight: 300;
+    font-size: 1em;
+    padding: 12px 15px;
+}
+
+.inputBox textarea {
+    outline: none;
+    resize: none;
+    position: relative;
+    width: 100%;
+    height: 112px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-weight: 300;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    padding: 12px 15px;
+}
+
+.inputBox .short-border {
+    padding: 7px 10px;
+}
+
+.inputBox label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
 }
 
 .links {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  color: var(--dark-gray);
-  font-weight: 600;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: var(--dark-gray);
+    font-weight: 600;
 }
 
 .links a {
-  color: var(--green);
-  text-decoration: none;
-  font-weight: 600;
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
 }
 
 .links a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-.inputBox input[type="button"] {
-  background: var(--blue);
-  color: var(--white);
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.1s ease-out;
+.inputBox input[type='button'] {
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.1s ease-out;
 }
 
-.inputBox input[type="button"]:hover {
-  background: color-mix(in srgb, var(--blue) 90%, transparent);
+.inputBox input[type='button']:hover {
+    background: color-mix(in srgb, var(--blue) 90%, transparent);
 }
 
 .alert-danger {
-  color: var(--red);
-  text-align: center;
+    color: var(--red);
+    text-align: center;
 }
 
 .visually-hidden {
-  display: none;
+    display: none;
 }
 
 .loader {
-  width: 50px;
-  padding: 7px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--blue);
-  --_m:
-    conic-gradient(#0000 10%, #000),
-    linear-gradient(#000 0 0) content-box;
-  -webkit-mask: var(--_m);
-  mask: var(--_m);
-  -webkit-mask-composite: source-out;
-  mask-composite: subtract;
-  animation: l3 1s infinite linear;
+    width: 50px;
+    padding: 7px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--blue);
+    --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+    -webkit-mask: var(--_m);
+    mask: var(--_m);
+    -webkit-mask-composite: source-out;
+    mask-composite: subtract;
+    animation: l3 1s infinite linear;
 }
 
 @keyframes l3 {
-  to {
-    transform: rotate(1turn)
-  }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.checkbox-container {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.checkbox-container label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    font-weight: 400;
+}
+
+.checkbox-container input {
+    position: relative !important;
+    appearance: none;
+    box-sizing: content-box;
+    overflow: hidden;
+    padding: 0;
+    margin-right: 15px;
+    border: none;
+
+    &:before {
+        content: '';
+        display: block;
+        box-sizing: content-box;
+        width: 16px;
+        height: 16px;
+        border: 1.4px solid var(--border);
+        transition: 0.2s border-color ease;
+    }
+
+    &:checked:before {
+        border-color: var(--green);
+        transition: 0.5s border-color ease;
+    }
+
+    &:disabled:before {
+        border-color: var(--border);
+        background-color: var(--border);
+    }
+
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        box-sizing: content-box;
+        top: 50%;
+        left: 50%;
+        transform-origin: 50% 50%;
+        background-color: var(--green);
+        width: 16px;
+        height: 16px;
+        border-radius: 100vh;
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    &[type='checkbox'] {
+        &:before {
+            border-radius: 4px;
+            transition:
+                0.2s border-color ease,
+                0.2s background-color ease;
+        }
+
+        &:after {
+            width: 9.6px;
+            height: 16px;
+            border-radius: 0;
+            transform: translate(-50%, -85%) scale(0) rotate(45deg);
+            background-color: transparent;
+            box-shadow: 4px 4px 0px 0px var(--green);
+        }
+
+        &:checked:after {
+            animation: toggleOnCheckbox 0.2s ease forwards;
+        }
+
+        &:checked:not(:disabled):before {
+            background-color: var(--green);
+        }
+
+        &:not(:disabled):after {
+            box-shadow: 4px 4px 0px 0px var(--white);
+        }
+    }
+}
+
+@keyframes toggleOnCheckbox {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -85%) scale(0) rotate(45deg);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translate(-50%, -85%) scale(0.9) rotate(45deg);
+    }
+
+    100% {
+        transform: translate(-50%, -85%) scale(0.8) rotate(45deg);
+    }
+}
+
+.button-group {
+    background: none;
+    display: flex;
+    gap: 10px;
+}
+
+.green-text {
+    color: rgb(30, 171, 93);
+}
+
+.red-text {
+    color: var(--red);
+}
+
+#approve-button {
+    font-weight: normal;
+}
+
+#reject-button {
+    background: var(--red);
+    font-weight: normal;
+}
+
+#reject-button:hover {
+    background: color-mix(in srgb, var(--red) 90%, transparent);
 }

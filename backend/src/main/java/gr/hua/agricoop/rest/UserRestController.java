@@ -5,6 +5,7 @@ import gr.hua.agricoop.entity.User;
 import gr.hua.agricoop.service.CooperativeService;
 import gr.hua.agricoop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,12 @@ public class UserRestController {
     @GetMapping("/{user_id}")
     public User getUser(@PathVariable Long user_id) {
         return userService.getUser(user_id);
+    }
+
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @GetMapping("/farmers")
+    public List<User> getFarmers() {
+        return userService.getFarmers();
     }
 
     @Secured("ROLE_ADMIN")
@@ -68,7 +75,7 @@ public class UserRestController {
     }
 
     @Secured({"ROLE_ADMIN", "ROLE_EMPLOYEE"})
-    @GetMapping("/cooperative/{cooperative_id}/check")
+    @GetMapping(value = "/cooperative/{cooperative_id}/check", produces = MediaType.APPLICATION_JSON_VALUE)
     public String checkApplication(@PathVariable Integer cooperative_id) {
         return cooperativeService.checkApplication(cooperative_id);
     }

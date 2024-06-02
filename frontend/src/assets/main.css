@@ -1,25 +1,25 @@
 @import './base.css';
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 h1 {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .content {
-  width: 741px;
-  margin-top: 70px;
+    width: 741px;
+    margin-top: 70px;
 }
 
-.content h1+p {
-  margin-top: 10px;
+.content h1 + p {
+    margin-top: 10px;
 }

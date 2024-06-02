@@ -1,5 +1,6 @@
 package gr.hua.agricoop.rest;
 
+import gr.hua.agricoop.dto.CooperativeDto;
 import gr.hua.agricoop.entity.Cooperative;
 import gr.hua.agricoop.entity.CultivationLocation;
 import gr.hua.agricoop.entity.Product;
@@ -46,8 +47,8 @@ public class CooperativeRestController {
 
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @PutMapping("/{cooperative_id}")
-    public ResponseEntity<Cooperative> editCooperative(@PathVariable Integer cooperative_id, @RequestBody Cooperative cooperative) {
-        Cooperative updatedCooperative = cooperativeService.editCooperative(cooperative_id, cooperative);
+    public ResponseEntity<Cooperative> editCooperative(@PathVariable Integer cooperative_id, @RequestBody CooperativeDto cooperativeDto) {
+        Cooperative updatedCooperative = cooperativeService.editCooperative(cooperative_id, cooperativeDto);
         return ResponseEntity.ok(updatedCooperative);
     }
 
