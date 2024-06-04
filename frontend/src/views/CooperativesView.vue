@@ -19,7 +19,8 @@ const fetchData = () => {
     if (isAuthorized('ROLE_USER')) {
         userIdRef.value = route.params.id;
         urlsRef.value = [`${backendEnvVar}/api/cooperative/user/${userIdRef.value}`];
-    } else if (isAuthorized('ROLE_ADMIN') || isAuthorized('ROLE_EMPLOYEE')) {
+    }
+    if (isAuthorized('ROLE_ADMIN') || isAuthorized('ROLE_EMPLOYEE')) {
         urlsRef.value = [`${backendEnvVar}/api/cooperative`];
     }
     performRequest();
@@ -32,9 +33,10 @@ const handleCooperativeDeleted = () => {
 };
 
 const cooperativeData = computed(() => {
-    const cooperativeUrl = isAuthorized('ROLE_USER')
-        ? `${backendEnvVar}/api/cooperative/user/${userIdRef.value}`
-        : `${backendEnvVar}/api/cooperative`;
+    const cooperativeUrl =
+        !isAuthorized('ROLE_ADMIN') && !isAuthorized('ROLE_EMPLOYEE')
+            ? `${backendEnvVar}/api/cooperative/user/${userIdRef.value}`
+            : `${backendEnvVar}/api/cooperative`;
 
     return data.value[cooperativeUrl] || [];
 });

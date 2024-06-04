@@ -16,7 +16,8 @@ const credentials = ref({
 });
 const authenticationFailed = ref(false);
 
-const onFormSubmit = () => {
+const onFormSubmit = (e) => {
+    e.preventDefault();
     loading.value = true;
     authenticationFailed.value = false;
 
@@ -62,7 +63,7 @@ onBeforeMount(() => {
                 <div class="loader" v-if="loading">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <form class="form" v-else>
+                <form class="form" @submit="onFormSubmit" v-else>
                     <div class="alert-danger" v-if="authenticationFailed">
                         Authentication failed!
                     </div>
@@ -70,7 +71,7 @@ onBeforeMount(() => {
                         <input
                             v-model="credentials.username"
                             type="text"
-                            placeholder="Email or Username"
+                            placeholder="Username"
                             required
                         />
                     </div>
@@ -87,7 +88,7 @@ onBeforeMount(() => {
                         <router-link to="/signup">Sign Up</router-link>
                     </div>
                     <div class="inputBox">
-                        <input @click="onFormSubmit" type="button" value="Login" />
+                        <input type="submit" value="Login" />
                     </div>
                 </form>
             </div>

@@ -29,7 +29,7 @@ public class UserRestController {
         return userService.getUsers();
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_USER", "ROLE_EMPLOYEE"})
     @GetMapping("/{user_id}")
     public User getUser(@PathVariable Long user_id) {
         return userService.getUser(user_id);

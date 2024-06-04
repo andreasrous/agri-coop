@@ -38,14 +38,19 @@ public class UserService {
     @Transactional
     public List<User> getFarmers() {
         List<User> farmers = userRepository.findAll();
-        Role role = roleRepository.findById(1).orElse(null);
-        farmers.removeIf(farmer-> !farmer.getRoles().contains(role));
+        Role user = roleRepository.findById(1).orElse(null);
+        Role admin = roleRepository.findById(3).orElse(null);
+        farmers.removeIf(farmer-> !farmer.getRoles().contains(user) && !farmer.getRoles().contains(admin));
         return farmers;
     }
 
     @Transactional
     public User saveUser(User user) {
-        roleRepository.findById(1).ifPresent(role -> user.getRoles().add(role));
+        roleRepository.findById(1).ifPresent(role -> {
+            if (user.getRoles().isEmpty()) {
+                user.getRoles().add(role);
+            }
+        });
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
         return user;

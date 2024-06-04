@@ -1,6 +1,7 @@
 package gr.hua.agricoop.rest;
 
 import gr.hua.agricoop.entity.CultivationLocation;
+import gr.hua.agricoop.entity.Product;
 import gr.hua.agricoop.service.CultivationLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,11 @@ public class CultivationLocationRestController {
     @GetMapping("")
     public List<CultivationLocation> getCultivationLocations() {
         return cultivationLocationService.getCultivationLocations();
+    }
+
+    @GetMapping("/{cultivation_location_id}")
+    public CultivationLocation getCultivationLocation(@PathVariable Integer cultivation_location_id) {
+        return cultivationLocationService.getCultivationLocation(cultivation_location_id);
     }
 
     @PostMapping("/new")

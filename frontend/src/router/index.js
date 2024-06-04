@@ -36,98 +36,60 @@ const router = createRouter({
             component: () => import('../views/CheckCooperativeView.vue'),
             meta: { requiresAuth: true }
         },
-        // {
-        //     path: '/cooperative/:id',
-        //     name: 'cooperative',
-        //     component: () => import('../views/CooperativeView.vue'),
-        //     meta: { requiresAuth: true },
-        //     children: [
-        //         {
-        //             path: '',
-        //             name: 'cooperative-details',
-        //             component: () => import('../views/CooperativeDetailsView.vue'),
-        //             meta: { requiresAuth: true }
-        //         }
-        //     ]
-        // },
-        // {
-        //     path: '/product',
-        //     name: 'products',
-        //     component: () => import('../views/ProductsView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
-        // {
-        //     path: '/product/new',
-        //     name: 'product-new',
-        //     component: () => import('../views/CreateProductView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
-        // {
-        //     path: '/product/:id',
-        //     name: 'product',
-        //     component: () => import('../views/ProductView.vue'),
-        //     meta: { requiresAuth: true },
-        //     children: [
-        //         {
-        //             path: '',
-        //             name: 'product-details',
-        //             component: () => import('../views/ProductDetailsView.vue'),
-        //             meta: { requiresAuth: true }
-        //         }
-        //     ]
-        // },
-        // {
-        //     path: '/cultivations-location',
-        //     name: 'cultivation-locations',
-        //     component: () => import('../views/CultivationLocationsView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
-        // {
-        //     path: '/cultivation-location/new',
-        //     name: 'cultivation-location-new',
-        //     component: () => import('../views/CreateCultivationLocationView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
-        // {
-        //     path: '/cultivation-location/:id',
-        //     name: 'cultivation-location',
-        //     component: () => import('../views/CultivationLocationView.vue'),
-        //     meta: { requiresAuth: true },
-        //     children: [
-        //         {
-        //             path: '',
-        //             name: 'cultivation-location-details',
-        //             component: () => import('../views/CultivationLocationDetailsView.vue'),
-        //             meta: { requiresAuth: true }
-        //         }
-        //     ]
-        // },
-        // {
-        //     path: '/user',
-        //     name: 'users',
-        //     component: () => import('../views/UsersView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
-        // {
-        //     path: '/user/new',
-        //     name: 'user-new',
-        //     component: () => import('../views/CreateUserView.vue'),
-        //     meta: { requiresAuth: true }
-        // },
-        // {
-        //     path: '/user/:id',
-        //     name: 'user',
-        //     component: () => import('../views/UserView.vue'),
-        //     meta: { requiresAuth: true },
-        //     children: [
-        //         {
-        //             path: '',
-        //             name: 'user-details',
-        //             component: () => import('../views/UserDetailsView.vue'),
-        //             meta: { requiresAuth: true }
-        //         }
-        //     ]
-        // },
+        {
+            path: '/user',
+            name: 'users',
+            component: () => import('../views/UsersView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/user/new',
+            name: 'user-new',
+            component: () => import('../views/UserFormView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/user/:id',
+            name: 'user-edit',
+            component: () => import('../views/UserFormView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/product',
+            name: 'products',
+            component: () => import('../views/ProductsView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/product/new',
+            name: 'product-new',
+            component: () => import('../views/ProductFormView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/product/:id',
+            name: 'product-edit',
+            component: () => import('../views/ProductFormView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/cultivations-location',
+            name: 'cultivation-locations',
+            component: () => import('../views/CultivationLocationsView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/cultivation-location/new',
+            name: 'cultivation-location-new',
+            component: () => import('../views/CultivationLocationFormView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/cultivation-location/:id',
+            name: 'cultivation-location-edit',
+            component: () => import('../views/CultivationLocationFormView.vue'),
+            meta: { requiresAuth: true }
+        },
         {
             path: '/login',
             name: 'login',

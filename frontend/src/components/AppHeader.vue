@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia';
 const router = useRouter();
 const applicationStore = useApplicationStore();
 const { userData, isAuthenticated } = storeToRefs(applicationStore);
-const { clearUserData } = applicationStore;
+const { clearUserData, isAuthorized } = applicationStore;
 const loading = ref(false);
 
 const logout = () => {
@@ -34,17 +34,22 @@ function openMenu() {
                 <li v-if="isAuthenticated">
                     <router-link :to="{ name: 'home' }">Home</router-link>
                 </li>
+                <li v-if="isAuthenticated && isAuthorized('ROLE_ADMIN')">
+                    <router-link :to="{ name: 'users' }">Users</router-link>
+                </li>
                 <li v-if="isAuthenticated">
                     <router-link :to="{ name: 'cooperatives', params: { id: userData.id } }"
                         >Cooperatives</router-link
                     >
                 </li>
-                <!-- <li v-if="isAuthenticated === true">
-          <router-link :to="{ name: 'products' }">Products</router-link>
-        </li>
-        <li v-if="isAuthenticated === true">
-          <router-link :to="{ name: 'cultivation-locations' }">Cultivation Locations</router-link>
-        </li> -->
+                <li v-if="isAuthenticated === true">
+                    <router-link :to="{ name: 'products' }">Products</router-link>
+                </li>
+                <li v-if="isAuthenticated === true">
+                    <router-link :to="{ name: 'cultivation-locations' }"
+                        >Cultivation Locations</router-link
+                    >
+                </li>
             </ul>
         </nav>
         <div class="auth">

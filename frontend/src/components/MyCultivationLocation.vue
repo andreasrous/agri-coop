@@ -4,14 +4,14 @@ import { RouterLink } from 'vue-router';
 import { useApplicationStore } from '@/stores/application.js';
 import { useRemoteData } from '@/composables/useRemoteData.js';
 
-defineProps(['name', 'status', 'notes']);
+defineProps(['address', 'area', 'zipCode']);
 
 const backendEnvVar = import.meta.env.VITE_BACKEND;
-const cooperativeId = getCurrentInstance().vnode.key;
+const locationId = getCurrentInstance().vnode.key;
 const applicationStore = useApplicationStore();
 const { isAuthorized } = applicationStore;
 
-const urlsRef = ref([`${backendEnvVar}/api/cooperative/${cooperativeId}`]);
+const urlsRef = ref([`${backendEnvVar}/api/cultivation-location/${locationId}`]);
 const authRef = ref(true);
 const methodRef = ref('DELETE');
 const { performRequest } = useRemoteData(urlsRef, authRef, methodRef);
@@ -20,28 +20,23 @@ const emit = getCurrentInstance().emit;
 
 const onDelete = async () => {
     await performRequest();
-    emit('cooperativeDeleted');
+    emit('cultivationLocationDeleted');
 };
 </script>
 
 <template>
     <div class="card">
-        <h4>{{ name }}</h4>
-        <p><strong>Status: </strong>{{ status }}</p>
-        <p><strong>Notes: </strong>{{ notes }}</p>
+        <h4>{{ area }}</h4>
+        <p><strong>Address: </strong>{{ address }}</p>
+        <p><strong>Zip Code: </strong>{{ zipCode }}</p>
         <div v-if="isAuthorized('ROLE_USER') || isAuthorized('ROLE_ADMIN')" class="icons">
-            <router-link :to="{ name: 'cooperative-edit', params: { id: cooperativeId } }">
+            <router-link :to="{ name: 'cultivation-location-edit', params: { id: locationId } }">
                 <i class="bx bx-edit-alt"></i>
             </router-link>
             <button @click="onDelete">
                 <i class="bx bx-trash"></i>
             </button>
         </div>
-        <router-link
-            v-if="isAuthorized('ROLE_EMPLOYEE') || isAuthorized('ROLE_ADMIN')"
-            :to="{ name: 'cooperative-check', params: { id: cooperativeId } }"
-            >Validation Check</router-link
-        >
         <div class="rect"></div>
     </div>
 </template>

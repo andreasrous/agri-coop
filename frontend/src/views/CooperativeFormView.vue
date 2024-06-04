@@ -51,7 +51,9 @@ const submitMethod = ref('POST');
 
 const { performRequest: submitForm } = useRemoteData(submitUrl, authRef, submitMethod, formDataRef);
 
-const onFormSubmit = async () => {
+const onFormSubmit = async (e) => {
+    e.preventDefault();
+
     formDataRef.value.farmers = selectedFarmers.value.map((id) => ({ id }));
     formDataRef.value.products = selectedProducts.value.map((id) => ({ id }));
     formDataRef.value.cultivationLocations = selectedLocations.value.map((id) => ({ id }));
@@ -89,12 +91,12 @@ watch(route, () => {
     <div class="container">
         <div class="create">
             <h2 v-if="route.params.id">Edit Cooperative</h2>
-            <h2 v-else>Create Cooperative</h2>
+            <h2 v-else>Add Cooperative</h2>
             <div class="content">
                 <div class="loader" v-if="loading">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <form class="form" v-else>
+                <form class="form" @submit="onFormSubmit" v-else>
                     <div v-if="error">{{ error.message }}</div>
                     <div class="inputBox">
                         <label for="name">Name:</label>
@@ -162,12 +164,7 @@ watch(route, () => {
                         </div>
                     </div>
                     <div class="inputBox">
-                        <input
-                            @click="onFormSubmit"
-                            class="short-border"
-                            type="button"
-                            value="Save"
-                        />
+                        <input class="short-border" type="submit" value="Save" />
                     </div>
                 </form>
             </div>

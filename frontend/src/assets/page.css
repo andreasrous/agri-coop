@@ -31,9 +31,14 @@ h1 {
 .content {
     width: 741px;
     margin-top: 70px;
+    padding: 0 40px;
 }
 
 .content h1 + div {
+    margin-top: 10px;
+}
+
+.content p + p {
     margin-top: 10px;
 }
 

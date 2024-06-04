@@ -99,7 +99,6 @@ const onReject = async () => {
                             v-model="formDataRef.notes"
                             id="notes"
                             class="short-border"
-                            required
                         ></textarea>
                     </div>
                     <div class="inputBox button-group">

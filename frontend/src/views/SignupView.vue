@@ -15,7 +15,8 @@ const credentials = ref({
 });
 const invalidCredentials = ref(false);
 
-const onFormSubmit = () => {
+const onFormSubmit = (e) => {
+    e.preventDefault();
     loading.value = true;
     invalidCredentials.value = false;
 
@@ -55,7 +56,7 @@ const onFormSubmit = () => {
                 <div class="loader" v-if="loading">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <form class="form" v-else>
+                <form class="form" @submit="onFormSubmit" v-else>
                     <div class="alert-danger" v-if="invalidCredentials">Invalid Credentials!</div>
                     <div class="inputBox">
                         <input
@@ -86,7 +87,7 @@ const onFormSubmit = () => {
                         <router-link to="/login">Login</router-link>
                     </div>
                     <div class="inputBox">
-                        <input @click="onFormSubmit" type="button" value="Sign Up" />
+                        <input type="submit" value="Sign Up" />
                     </div>
                 </form>
             </div>

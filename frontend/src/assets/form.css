@@ -121,7 +121,8 @@ h2 {
     text-decoration: underline;
 }
 
-.inputBox input[type='button'] {
+.inputBox input[type='button'],
+.inputBox input[type='submit'] {
     background: var(--blue);
     color: var(--white);
     font-weight: 600;
@@ -130,8 +131,13 @@ h2 {
     transition: 0.1s ease-out;
 }
 
-.inputBox input[type='button']:hover {
+.inputBox input[type='button']:hover,
+.inputBox input[type='submit']:hover {
     background: color-mix(in srgb, var(--blue) 90%, transparent);
+}
+
+.inputBox input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
 .alert-danger {

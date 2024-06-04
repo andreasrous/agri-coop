@@ -1,0 +1,7 @@
+@import './base.css';
+
+footer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}

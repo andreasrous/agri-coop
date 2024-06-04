@@ -1,47 +1,52 @@
 <script setup>
-import { ref, getCurrentInstance } from 'vue';
+import { ref, computed, getCurrentInstance } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useApplicationStore } from '@/stores/application.js';
 import { useRemoteData } from '@/composables/useRemoteData.js';
 
-defineProps(['name', 'status', 'notes']);
+const props = defineProps(['username', 'email', 'roles']);
 
 const backendEnvVar = import.meta.env.VITE_BACKEND;
-const cooperativeId = getCurrentInstance().vnode.key;
+const userId = getCurrentInstance().vnode.key;
 const applicationStore = useApplicationStore();
 const { isAuthorized } = applicationStore;
 
-const urlsRef = ref([`${backendEnvVar}/api/cooperative/${cooperativeId}`]);
+const urlsRef = ref([`${backendEnvVar}/api/user/${userId}`]);
 const authRef = ref(true);
 const methodRef = ref('DELETE');
 const { performRequest } = useRemoteData(urlsRef, authRef, methodRef);
 
 const emit = getCurrentInstance().emit;
 
+const roleOrder = ['ADMIN', 'USER', 'EMPLOYEE'];
+
+// const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+const formattedRoles = computed(() => {
+    const roles = props.roles.map((role) => role.name.replace('ROLE_', ''));
+    const sortedRoles = roles.sort((a, b) => roleOrder.indexOf(a) - roleOrder.indexOf(b));
+    return sortedRoles.join(', ');
+});
+
 const onDelete = async () => {
     await performRequest();
-    emit('cooperativeDeleted');
+    emit('userDeleted');
 };
 </script>
 
 <template>
     <div class="card">
-        <h4>{{ name }}</h4>
-        <p><strong>Status: </strong>{{ status }}</p>
-        <p><strong>Notes: </strong>{{ notes }}</p>
-        <div v-if="isAuthorized('ROLE_USER') || isAuthorized('ROLE_ADMIN')" class="icons">
-            <router-link :to="{ name: 'cooperative-edit', params: { id: cooperativeId } }">
+        <h4>{{ username }}</h4>
+        <p><strong>Email: </strong>{{ email }}</p>
+        <p><strong>Roles: </strong>{{ formattedRoles }}</p>
+        <div v-if="isAuthorized('ROLE_ADMIN')" class="icons">
+            <router-link :to="{ name: 'user-edit', params: { id: userId } }">
                 <i class="bx bx-edit-alt"></i>
             </router-link>
             <button @click="onDelete">
                 <i class="bx bx-trash"></i>
             </button>
         </div>
-        <router-link
-            v-if="isAuthorized('ROLE_EMPLOYEE') || isAuthorized('ROLE_ADMIN')"
-            :to="{ name: 'cooperative-check', params: { id: cooperativeId } }"
-            >Validation Check</router-link
-        >
         <div class="rect"></div>
     </div>
 </template>

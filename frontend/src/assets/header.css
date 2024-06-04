@@ -22,6 +22,7 @@ header {
     background-color: var(--white);
     position: sticky;
     top: 0;
+    z-index: 1000;
     padding: 0 85px;
     display: flex;
     align-items: center;
@@ -48,6 +49,7 @@ header .logo img {
 
 header ul {
     display: flex;
+    align-items: center;
     gap: 40px;
 }
 

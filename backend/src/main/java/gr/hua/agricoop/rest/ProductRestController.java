@@ -1,9 +1,11 @@
 package gr.hua.agricoop.rest;
 
+import gr.hua.agricoop.entity.Cooperative;
 import gr.hua.agricoop.entity.Product;
 import gr.hua.agricoop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,11 @@ public class ProductRestController {
     @GetMapping("")
     public List<Product> getProducts() {
         return productService.getProducts();
+    }
+
+    @GetMapping("/{product_id}")
+    public Product getProduct(@PathVariable Integer product_id) {
+        return productService.getProduct(product_id);
     }
 
     @PostMapping("/new")
