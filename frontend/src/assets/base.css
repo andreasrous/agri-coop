@@ -1,0 +1,25 @@
+/* google font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+/* layout */
+:root {
+    --green: #42b682;
+    --red: #f00000;
+    --blue: #027afc;
+    --black: #000;
+    --white: #fff;
+    --dark-gray: #333;
+    --border: #ccc;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f1f1f1;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}

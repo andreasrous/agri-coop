@@ -4,7 +4,6 @@ import gr.hua.agricoop.entity.CultivationLocation;
 import gr.hua.agricoop.repository.CultivationLocationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +20,15 @@ public class CultivationLocationService {
     }
 
     @Transactional
-    public CultivationLocation editCultivationLocation(Integer cultivationLocationId, CultivationLocation updatedCultivationLocation) {
-        CultivationLocation existingCultivationLocation = cultivationLocationRepository.findById(cultivationLocationId)
-                .orElseThrow(() -> new ResourceNotFoundException("CultivationLocation not found with id: " + cultivationLocationId));
-        existingCultivationLocation.setAddress(updatedCultivationLocation.getAddress());
-        existingCultivationLocation.setArea(updatedCultivationLocation.getArea());
-        existingCultivationLocation.setZipCode(updatedCultivationLocation.getZipCode());
-        existingCultivationLocation.setCooperative(updatedCultivationLocation.getCooperative());
+    public CultivationLocation getCultivationLocation(Integer cultivationLocationId) {
+        return cultivationLocationRepository.findById(cultivationLocationId).orElseThrow();
+    }
 
-        return cultivationLocationRepository.save(existingCultivationLocation);
+    @Transactional
+    public List<CultivationLocation> getCultivationLocationsWithoutCooperative() {
+        List<CultivationLocation> cultivationLocations = cultivationLocationRepository.findAll();
+        cultivationLocations.removeIf(cultivationLocation -> !cultivationLocation.getCooperatives().isEmpty());
+        return cultivationLocations;
     }
 
     @Transactional
@@ -39,19 +38,19 @@ public class CultivationLocationService {
     }
 
     @Transactional
+    public CultivationLocation editCultivationLocation(Integer cultivationLocationId, CultivationLocation updatedCultivationLocation) {
+        CultivationLocation existingCultivationLocation = cultivationLocationRepository.findById(cultivationLocationId).orElse(null);
+        if (existingCultivationLocation != null) {
+            existingCultivationLocation.setAddress(updatedCultivationLocation.getAddress());
+            existingCultivationLocation.setArea(updatedCultivationLocation.getArea());
+            existingCultivationLocation.setZipCode(updatedCultivationLocation.getZipCode());
+            cultivationLocationRepository.save(existingCultivationLocation);
+        }
+        return existingCultivationLocation;
+    }
+
+    @Transactional
     public void deleteCultivationLocation(Integer cultivationLocationId) {
         cultivationLocationRepository.deleteById(cultivationLocationId);
-    }
-
-    @Transactional
-    public CultivationLocation getCultivationLocation(Integer cultivationLocationId) {
-        return cultivationLocationRepository.findById(cultivationLocationId).get();
-    }
-
-    @Transactional
-    public List<CultivationLocation> getCultivationLocationsWithoutCooperative() {
-        List<CultivationLocation> cultivationLocations = cultivationLocationRepository.findAll();
-        cultivationLocations.removeIf(cultivationLocation -> cultivationLocation.getCooperative() != null);
-        return cultivationLocations;
     }
 }

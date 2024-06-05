@@ -1,14 +1,17 @@
 package gr.hua.agricoop.service;
 
+import gr.hua.agricoop.entity.Role;
 import gr.hua.agricoop.entity.User;
+import gr.hua.agricoop.repository.RoleRepository;
 import gr.hua.agricoop.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,7 +20,41 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Transactional
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow();
+    }
+
+    @Transactional
+    public List<User> getFarmers() {
+        List<User> farmers = userRepository.findAll();
+        Role user = roleRepository.findById(1).orElse(null);
+        Role admin = roleRepository.findById(3).orElse(null);
+        farmers.removeIf(farmer-> !farmer.getRoles().contains(user) && !farmer.getRoles().contains(admin));
+        return farmers;
+    }
+
+    @Transactional
+    public User saveUser(User user) {
+        roleRepository.findById(1).ifPresent(role -> {
+            if (user.getRoles().isEmpty()) {
+                user.getRoles().add(role);
+            }
+        });
+        user.setPassword(encoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return user;
+    }
 
     @Transactional
     public User editUser(Long userId, User user) {
@@ -29,21 +66,10 @@ public class UserService {
             existingUser.setUsername(user.getUsername());
             existingUser.setPassword(encoder.encode(user.getPassword()));
             existingUser.setEmail(user.getEmail());
+            existingUser.setRoles(user.getRoles());
             userRepository.save(existingUser);
         }
         return existingUser;
-    }
-
-    @Transactional
-    public List<User> getUsers() {
-        return userRepository.findAll();
-    }
-
-    @Transactional
-    public User saveUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return user;
     }
 
     @Transactional
@@ -52,21 +78,26 @@ public class UserService {
     }
 
     @Transactional
-    public User getUser(Long userId) {
-        return userRepository.findById(userId).get();
+    public ResponseEntity<?> addRole(Long userId, Integer roleId) {
+        User user = getUser(userId);
+        Role role = roleRepository.findById(roleId).orElse(null);
+        if (user == null || role == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Role not found");
+        }
+        user.getRoles().add(role);
+        editUser(userId, user);
+        return ResponseEntity.ok(user);
     }
 
     @Transactional
-    public List<User> getFarmersWithoutCooperative() {
-        List<User> farmers = userRepository.findAll();
-        farmers.removeIf(farmer-> farmer.getCooperative() != null);
-        return farmers;
-    }
-
-    @Transactional
-    public User getUserByUsername(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        return userOptional.orElse(null);
+    public ResponseEntity<?> removeRole(Long userId, Integer roleId) {
+        User user = getUser(userId);
+        Role role = roleRepository.findById(roleId).orElse(null);
+        if (user == null || role == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Role not found");
+        }
+        user.getRoles().remove(role);
+        editUser(userId, user);
+        return ResponseEntity.ok(user);
     }
 }
-

@@ -3,12 +3,12 @@ package gr.hua.agricoop.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "cooperative")
+@Table(name = "cooperatives")
 public class Cooperative {
 
     @Id
@@ -30,20 +30,35 @@ public class Cooperative {
 
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "employee_id")
     @JsonBackReference
     private User employee;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cooperative", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name="cooperative_farmers",
+            joinColumns = @JoinColumn(name="cooperative_id"),
+            inverseJoinColumns = @JoinColumn(name="farmer_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames={"farmer_id", "cooperative_id"})}
+    )
     private List<User> farmers;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cooperative", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name="cooperative_products",
+            joinColumns = @JoinColumn(name="cooperative_id"),
+            inverseJoinColumns = @JoinColumn(name="product_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames={"product_id", "cooperative_id"})}
+    )
     private List<Product> products;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cooperative", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name="cooperative_locations",
+            joinColumns = @JoinColumn(name="cooperative_id"),
+            inverseJoinColumns = @JoinColumn(name="location_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames={"location_id", "cooperative_id"})}
+    )
     private List<CultivationLocation> cultivationLocations;
 
     public Cooperative() {
@@ -82,7 +97,7 @@ public class Cooperative {
     }
 
     public String getStatus() {
-        return status.substring(0, 1).toUpperCase() + status.substring(1);
+        return status;
     }
 
     public void setStatus(String status) {
@@ -159,49 +174,44 @@ public class Cooperative {
         } else if (status.equalsIgnoreCase("rejected")) {
             return "Application already rejected.";
         }
-        if (!(farmers.isEmpty() || products.isEmpty() || cultivationLocations.isEmpty()) && vatIsValid()) {
+        if (!(farmers.isEmpty() || products.isEmpty() || cultivationLocations.isEmpty()) && isVatValid()) {
             return "Application is valid.";
         } else {
-            String checkResult = "Application has:\n";
-            if (farmers.isEmpty()) {
-                checkResult += "\t- Less than 1 member\n";
-            }
-            if (products.isEmpty()) {
-                checkResult += "\t- Less than 1 product\n";
-            }
-            if (cultivationLocations.isEmpty()) {
-                checkResult += "\t- Less than 1 cultivation location\n";
-            }
-            if (!vatIsValid()) {
-                checkResult += "\t- Invalid VAT number";
-            }
-            return checkResult;
+            return getString();
         }
     }
 
-    private boolean vatIsValid() {
+    private String getString() {
+        String checkResult = "";
+        if (farmers.isEmpty()) {
+            checkResult += "Less than 1 member,";
+        }
+        if (products.isEmpty()) {
+            checkResult += "Less than 1 product,";
+        }
+        if (cultivationLocations.isEmpty()) {
+            checkResult += "Less than 1 cultivation location,";
+        }
+        if (!isVatValid()) {
+            checkResult += "Invalid VAT number";
+        }
+        return checkResult;
+    }
+
+    private boolean isVatValid() {
         if (vat.length() == 9) {
             try {
                 Integer.parseInt(vat);
             } catch (NumberFormatException error) {
                 return false;
             }
-
             int sum = 0;
-            int product;
-            int lastDigit = Character.getNumericValue(vat.charAt(8));
-
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0, product; i < 8; i++) {
                 product = Character.getNumericValue(vat.charAt(i));
                 product *= (int) Math.pow(2, 8 - i);
                 sum += product;
             }
-
-            if ((sum % 11) % 10 == lastDigit && !vat.equals("000000000")) {
-                return true;
-            } else {
-                return false;
-            }
+            return (sum % 11) % 10 == Character.getNumericValue(vat.charAt(8)) && !vat.equals("000000000");
         } else {
             return false;
         }
@@ -209,14 +219,17 @@ public class Cooperative {
 
     @PreRemove
     private void preRemove() {
-        for (User user : farmers) {
-            user.setCooperative(null);
+        if (employee != null) {
+            employee.removeApplication(this);
+        }
+        for (User farmer : farmers) {
+            farmer.removeCooperative(this);
         }
         for (Product product : products) {
-            product.setCooperative(null);
+            product.removeCooperative(this);
         }
         for (CultivationLocation cultivationLocation : cultivationLocations) {
-            cultivationLocation.setCooperative(null);
+            cultivationLocation.removeCooperative(this);
         }
     }
 
