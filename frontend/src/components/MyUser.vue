@@ -18,14 +18,14 @@ const { performRequest } = useRemoteData(urlsRef, authRef, methodRef);
 
 const emit = getCurrentInstance().emit;
 
-const roleOrder = ['ADMIN', 'USER', 'EMPLOYEE'];
+const roleOrder = ['admin', 'user', 'employee'];
 
-// const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 const formattedRoles = computed(() => {
-    const roles = props.roles.map((role) => role.name.replace('ROLE_', ''));
+    const roles = props.roles.map((role) => role.name.replace('ROLE_', '').toLowerCase());
     const sortedRoles = roles.sort((a, b) => roleOrder.indexOf(a) - roleOrder.indexOf(b));
-    return sortedRoles.join(', ');
+    return sortedRoles.map(capitalize).join(', ');
 });
 
 const onDelete = async () => {

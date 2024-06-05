@@ -28,7 +28,7 @@ const onDelete = async () => {
     <div class="card">
         <h4>{{ name }}</h4>
         <p><strong>Category: </strong>{{ category }}</p>
-        <p><strong>Price: </strong>{{ price }}</p>
+        <p><strong>Price: </strong>${{ price }}</p>
         <div v-if="isAuthorized('ROLE_USER') || isAuthorized('ROLE_ADMIN')" class="icons">
             <router-link :to="{ name: 'product-edit', params: { id: productId } }">
                 <i class="bx bx-edit-alt"></i>
