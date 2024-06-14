@@ -20,7 +20,7 @@ const emit = getCurrentInstance().emit;
 
 const onDelete = async () => {
     await performRequest();
-    emit('cultivationLocationDeleted');
+    emit('locationDeleted');
 };
 </script>
 
