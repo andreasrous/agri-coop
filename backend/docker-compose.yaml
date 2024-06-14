@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:14
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=pass123
+      - POSTGRES_DB=dsdb
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    volumes:
+      - 'dslabdb:/var/lib/postgresql/data/'
+
+  spring:
+    image: sp
+    build:
+      context: .
+      dockerfile: nonroot.Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/dsdb
+      - SPRING_DATASOURCE_USERNAME=dbuser
+      - SPRING_DATASOURCE_PASSWORD=pass123
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9090/actuator/health" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  frontend:
+    build:
+      context: https://github.com/andreasrous/agri-coop.git#main:frontend
+    ports:
+      - 9000:80
+    depends_on:
+      spring:
+        condition: service_healthy
+
+volumes:
+  dslabdb:

@@ -1,6 +1,6 @@
 # Agricultural Cooperative Management System
 
-An application designed to manage agricultural cooperatives. It makes use of Spring Boot, Spring Security (JWT), Vue.js, PostgreSQL, Docker and more.
+An application for managing agricultural cooperatives, utilizing Spring Boot, Spring Security (JWT), Vue.js, PostgreSQL, Docker, and more.
 
 ## Project Structure
 
@@ -9,23 +9,19 @@ An application designed to manage agricultural cooperatives. It makes use of Spr
 
 ## Prerequisites
 
-- Java 17
+- Java 17 or higher
 - Node.js and npm
-- Maven
 - Docker
+
+## Optional
+
+- Maven
 
 ## Setting Up and Running the Application
 
 ### Backend
 
-1. **Start the Spring Boot Application**
-
-   ```bash
-   cd backend
-   mvn spring-boot:run
-   ```
-
-2. **Start PostgreSQL Database as a Container**
+1. **Start PostgreSQL Database as a Container**
 
    ```bash
    docker run --name ds-lab-pg --rm \
@@ -38,20 +34,23 @@ An application designed to manage agricultural cooperatives. It makes use of Spr
    postgres:14
    ```
 
-3. **Dockerize the Backend**
+2. **Start the Spring Boot Application**
+
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run
+   ```
+
+3. **Package the Application**
 
    ```bash
    ./mvnw package -Dmaven.test.skip
-   docker-compose up
    ```
 
-   If you use the git protocol in the frontend build, run:
+4. **Start the Application using Docker Compose**
 
    ```bash
-   export DOCKER_BUILDKIT=0
-   export COMPOSE_DOCKER_CLI_BUILD=0
-
-   docker-compose up --build
+   docker-compose up
    ```
 
 ### Frontend
