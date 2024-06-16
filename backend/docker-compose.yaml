@@ -10,9 +10,7 @@ services:
       - POSTGRES_PASSWORD=pass123
       - POSTGRES_DB=dsdb
     healthcheck:
-      test:
-        - CMD-SHELL
-        - pg_isready -U postgres
+      test: ["CMD-SHELL", "pg_isready -U dbuser -d dsdb"]
       interval: 30s
       timeout: 30s
       retries: 3
