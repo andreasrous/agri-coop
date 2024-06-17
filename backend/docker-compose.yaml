@@ -18,7 +18,7 @@ services:
       - 'dslabdb:/var/lib/postgresql/data/'
 
   spring:
-    image: sp
+    image: ghcr.io/andreasrous/devops-backend:latest
     build:
       context: .
       dockerfile: nonroot.Dockerfile
@@ -38,6 +38,7 @@ services:
       retries: 3
 
   frontend:
+    image: ghcr.io/andreasrous/devops-frontend:latest
     build:
       context: https://github.com/andreasrous/agri-coop.git#main:frontend
     ports:
